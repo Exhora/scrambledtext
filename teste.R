@@ -4,6 +4,7 @@ err <- 0
 bestvero <- 0
 trocou <- 0
 
+
 	#lê o texto
 	text <- readLines("scramble2.txt")
 	str <- concatenate(text)
@@ -26,9 +27,10 @@ trocou <- 0
 
 	vero_old <- 0
 	vero <- 0
+	count <- 0
 	while(TRUE){
-	trocou <- 0
-	#fazer para cada par
+		trocou <- 0
+		#fazer para cada par
 		for(i in 1:(length(charvec)-1)){
 			j <- i+1
 			#calcula prob antes da troca
@@ -83,13 +85,15 @@ trocou <- 0
 				vero <- vero + table_dicionario$prop[id1]
 			}
 		}
+		count<- count +1
+		print(count)
 		#salva o melhor
 		print(vero)
+		print(charvec)
 		if(vero > bestvero){
-			bestvero <- vero
-			bestcharvec <- charvec
-		}
-
+        		bestvero <- vero
+                	bestcharvec <- charvec
+        	}
 		#sair de minimo local
 		if(!trocou){
 			i <- sample(1:length(charvec), 1)
