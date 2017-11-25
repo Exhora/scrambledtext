@@ -94,23 +94,12 @@ trocou <- 0
 			
 	
 			#se a prob depois for maior, faz a troca
-			if(count < 5000){
 				if(prob2 >= prob1){
 					auxc <- charvec[i]
 					charvec[i] <- charvec[j]
 					charvec[j] <- auxc
 					trocou <- 1
 				}
-			}
-			
-			if(count > 5000){
-				if(prob2 > prob1){
-					auxc <- charvec[i]
-					charvec[i] <- charvec[j]
-					charvec[j] <- auxc
-					trocou <- 1
-				} 
-			}
 		}
 		#calcula a verossimilhanca
 		vero_old <- vero
