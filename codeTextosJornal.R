@@ -37,68 +37,121 @@ trocou <- 0
 			j <- sample(1:length(charvec), 1)
 			
 			#qual é trio de i antes da troca?
+			aux1 <- 0
+			aux12 <- 0
+			aux13 <- 0
 			if(i == 1)
 				aux1 <- concatenate(charvec[i], charvec[i+1], charvec[i+2], "")
 			if(i == length(charvec))
 				aux1 <- concatenate(charvec[i-2], charvec[i-1], charvec[i], "")
-			if(i > 1 && i < length(charvec))
+			#se nao estiver nas pontas, vai afetar 3 trios
+			if(i > 1 && i < length(charvec)){
 				aux1 <- concatenate(charvec[i-1], charvec[i], charvec[i+1], "")
+				aux12 <- concatenate(charvec[i], charvec[i+1], charvec[i+2], "")
+				aux13 <- concatenate(charvec[i-2], charvec[i-1], charvec[i], "")
+			}
 
 			id1 <- match(aux1, table_dicionario$ngrams)
+			id12 <- match(aux12, table_dicionario$ngrams)
+			id13 <- match(aux13, table_dicionario$ngrams)
 		
 			#qual é trio de j antes da troca?
+			aux2 <- 0
+			aux22 <- 0
+			aux23 <- 0
 			if(j == 1)
 				aux2 <- concatenate(charvec[j], charvec[j+1], charvec[j+2], "")
 			if(j == length(charvec))
 				aux2 <- concatenate(charvec[j-2], charvec[j-1], charvec[j], "")
-			if(j > 1 && j < length(charvec))
+			if(j > 1 && j < length(charvec)){
 				aux2 <- concatenate(charvec[j-1], charvec[j], charvec[j+1], "")
+				aux22 <- concatenate(charvec[j], charvec[j+1], charvec[j+2], "")
+				aux23 <- concatenate(charvec[j-2], charvec[j-1], charvec[j], "")
+			}
 
 			id2 <- match(aux2, table_dicionario$ngrams)
+			id22 <- match(aux22, table_dicionario$ngrams)
+			id23 <- match(aux23, table_dicionario$ngrams)
 		
 
 			#qual eh a prob desses trios antes da troca?
+			#soma de 3 trios afetados pelo i
 			prob1 <- 0
 			if(!is.na(id1)) 
 				prob1 <- prob1 + table_dicionario$prop[id1]
+			if(!is.na(id12)) 
+				prob1 <- prob1 + table_dicionario$prop[id12]
+			if(!is.na(id13)) 
+				prob1 <- prob1 + table_dicionario$prop[id13]
+			#mais 3 trios afetados pelo j
 			if(!is.na(id2)) 
 				prob1 <- prob1 + table_dicionario$prop[id2]
+			if(!is.na(id22)) 
+				prob1 <- prob1 + table_dicionario$prop[id22]
+			if(!is.na(id23)) 
+				prob1 <- prob1 + table_dicionario$prop[id23]
 			
 			#qual é trio de i depois da troca?
+			aux1 <- 0
+			aux12 <- 0
+			aux13 <- 0
 			if(i == 1)
 				aux1 <- concatenate(charvec[j], charvec[i+1], charvec[i+2], "")
 			if(i == length(charvec))
 				aux1 <- concatenate(charvec[i-2], charvec[i-1], charvec[j], "")
-			if(i > 1 && i < length(charvec))
+			#se nao estiver nas pontas, vai afetar 3 trios
+			if(i > 1 && i < length(charvec)){
 				aux1 <- concatenate(charvec[i-1], charvec[j], charvec[i+1], "")
+				aux12 <- concatenate(charvec[j], charvec[i+1], charvec[i+2], "")
+				aux13 <- concatenate(charvec[i-2], charvec[i-1], charvec[j], "")
+			}
 
 			id1 <- match(aux1, table_dicionario$ngrams)
+			id12 <- match(aux12, table_dicionario$ngrams)
+			id13 <- match(aux13, table_dicionario$ngrams)
 		
 			#qual é trio de j depois da troca?
+			aux2 <- 0
+			aux22 <- 0
+			aux23 <- 0
 			if(j == 1)
 				aux2 <- concatenate(charvec[i], charvec[j+1], charvec[j+2], "")
 			if(j == length(charvec))
 				aux2 <- concatenate(charvec[j-2], charvec[j-1], charvec[i], "")
-			if(j > 1 && j < length(charvec))
+			if(j > 1 && j < length(charvec)){
 				aux2 <- concatenate(charvec[j-1], charvec[i], charvec[j+1], "")
+				aux22 <- concatenate(charvec[i], charvec[j+1], charvec[j+2], "")
+				aux23 <- concatenate(charvec[j-2], charvec[j-1], charvec[i], "")
+			}
 
 			id2 <- match(aux2, table_dicionario$ngrams)
+			id22 <- match(aux22, table_dicionario$ngrams)
+			id23 <- match(aux23, table_dicionario$ngrams)
 		
-
+			#1 chance em length(charvec) de só conferir 1 dos trios afetados
+			check <- sample(1:length(charvec), 1)
 			#qual eh a prob desses trios depois da troca?
+			#soma de 3 trios afetados pelo i
 			prob2 <- 0
 			if(!is.na(id1)) 
-				prob1 <- prob1 + table_dicionario$prop[id1]
+				prob2 <- prob2 + table_dicionario$prop[id1]
+			if(!is.na(id12) && check > 1) 
+				prob2 <- prob2 + table_dicionario$prop[id12]
+			if(!is.na(id13) && check > 1) 
+				prob2 <- prob2 + table_dicionario$prop[id13]
+			#mais 3 trios afetados pelo j
 			if(!is.na(id2)) 
-				prob1 <- prob1 + table_dicionario$prop[id2]
-			
+				prob2 <- prob2 + table_dicionario$prop[id2]
+			if(!is.na(id22) && check > 1) 
+				prob2 <- prob2 + table_dicionario$prop[id22]
+			if(!is.na(id23) && check > 1) 
+				prob2 <- prob2 + table_dicionario$prop[id23]
 	
 			#se a prob depois for maior, faz a troca
 				if(prob2 >= prob1){
 					auxc <- charvec[i]
 					charvec[i] <- charvec[j]
 					charvec[j] <- auxc
-					trocou <- 1
 				}
 		}
 		#calcula a verossimilhanca
@@ -111,6 +164,17 @@ trocou <- 0
 				vero <- vero + table_dicionario$prop[id1]
 			}
 		}
+		
+		#sair de minimo local
+		#if(!trocou){
+		#	i <- sample(1:length(charvec), 1)
+		#	j <- sample(1:length(charvec), 1)
+		#	auxc <- charvec[i]
+                #        charvec[i] <- charvec[j]
+                #        charvec[j] <- auxc
+		#	print("trocou")
+
+		#}
 		count<- count +1
 		print(count)
 		#salva o melhor
@@ -120,14 +184,4 @@ trocou <- 0
         		bestvero <- vero
                 	bestcharvec <- charvec
         	}
-		#sair de minimo local
-		#if(!trocou){
-		#	i <- sample(1:length(charvec), 1)
-		#	j <- sample(1:length(charvec), 1)
-		#	auxc <- charvec[i]
-                #        charvec[i] <- charvec[j]
-                #        charvec[j] <- auxc
-
-		#}
-	}
-
+}
