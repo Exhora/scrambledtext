@@ -23,11 +23,13 @@ trocou <- 0
 
 	#imprime ngrams
 	table_dicionario <- get.phrasetable(dicionario)
-
+	#pega somente os trios que apareceram no minimo 50 vezes nos textos
+	#table_dicionario <- table_dicionario[which(table_dicionario[,2] > 50),]
 
 	vero_old <- 0
 	vero <- 0
 	count <- 0
+	randon_rate <- 100 #comeca aleatorio
 	while(TRUE){
 		trocou <- 0
 		#repetir tantas vezes quanto o tamanho da string
@@ -129,25 +131,27 @@ trocou <- 0
 			id23 <- match(aux23, table_dicionario$ngrams)
 		
 			#1 chance em length(charvec) de só conferir 1 dos trios afetados
-			check <- sample(1:length(charvec), 1)
+			check <- sample(1:100, 1)
 			#qual eh a prob desses trios depois da troca?
 			#soma de 3 trios afetados pelo i
 			prob2 <- 0
 			if(!is.na(id1)) 
 				prob2 <- prob2 + table_dicionario$prop[id1]
-			if(!is.na(id12) && check > 1) 
+			if(!is.na(id12) && check > randon_rate) 
 				prob2 <- prob2 + table_dicionario$prop[id12]
-			if(!is.na(id13) && check > 1) 
+			if(!is.na(id13) && check > randon_rate) 
 				prob2 <- prob2 + table_dicionario$prop[id13]
 			#mais 3 trios afetados pelo j
 			if(!is.na(id2)) 
 				prob2 <- prob2 + table_dicionario$prop[id2]
-			if(!is.na(id22) && check > 1) 
+			if(!is.na(id22) && check > randon_rate) 
 				prob2 <- prob2 + table_dicionario$prop[id22]
-			if(!is.na(id23) && check > 1) 
+			if(!is.na(id23) && check > randon_rate) 
 				prob2 <- prob2 + table_dicionario$prop[id23]
 	
 			#se a prob depois for maior, faz a troca
+			#ou faz a troca de qq forma com 0.01% de chance
+			#check <- sample(1:10000, 1)
 				if(prob2 >= prob1){
 					auxc <- charvec[i]
 					charvec[i] <- charvec[j]
@@ -184,4 +188,8 @@ trocou <- 0
         		bestvero <- vero
                 	bestcharvec <- charvec
         	}
+		#a cada 100 iterações, o algoritmo fica 1% menos aleatorio
+		if((count %% 100) == 0){
+			randon_rate <- randon_rate -1
+		}
 }
